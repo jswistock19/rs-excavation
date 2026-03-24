@@ -96,9 +96,9 @@
 
   const GALLERY_ITEMS = [
     { src: './assets/kubota-trailer.jpg', label: 'Kubota KX060 Ready to Roll', category: 'equipment' },
-    { src: './assets/fb-photo-17.jpg', label: 'Tree Removal & Land Clearing', category: 'clearing' },
+    { src: './assets/fb-photo-12.jpg', label: 'Land Clearing Project', category: 'clearing' },
     { src: './assets/fb-photo-18.jpg', label: 'Demolition & Debris Cleanup', category: 'excavation' },
-    { src: './assets/fb-photo-robbie-profile.jpg', label: 'Robbie Smith - Owner/Operator', category: 'equipment' },
+    { src: './assets/fb-photo-15.jpg', label: 'Storm Shelter Excavation', category: 'equipment' },
     { src: './assets/fb-photo-7.jpg', label: 'Septic Component Install', category: 'septic' },
     { src: './assets/fb-photo-8.jpg', label: 'Trench Work in Progress', category: 'excavation' },
     { src: './assets/fb-photo-9.jpg', label: 'Drainage Pipe Installation', category: 'excavation' },
