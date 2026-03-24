@@ -95,12 +95,18 @@
   ];
 
   const GALLERY_ITEMS = [
-    { src: './assets/gallery-septic.jpg', label: 'Septic Tank Installation', category: 'septic' },
-    { src: './assets/gallery-trench.jpg', label: 'Utility Trench Excavation', category: 'excavation' },
-    { src: './assets/gallery-driveway.jpg', label: 'Driveway Before & After', category: 'driveways' },
-    { src: './assets/gallery-clearing.jpg', label: 'Lot Clearing Project', category: 'clearing' },
-    { src: './assets/gallery-drainage.jpg', label: 'Drainage Pipe Installation', category: 'excavation' },
-    { src: './assets/gallery-equipment.jpg', label: 'Kubota KX060 on Trailer', category: 'equipment' }
+    { src: './assets/kubota-trailer.jpg', label: 'Kubota KX060 Ready to Roll', category: 'equipment' },
+    { src: './assets/fb-photo-17.jpg', label: 'Tree Removal & Land Clearing', category: 'clearing' },
+    { src: './assets/fb-photo-18.jpg', label: 'Demolition & Debris Cleanup', category: 'excavation' },
+    { src: './assets/fb-photo-robbie-profile.jpg', label: 'Robbie Smith - Owner/Operator', category: 'equipment' },
+    { src: './assets/fb-photo-7.jpg', label: 'Septic Component Install', category: 'septic' },
+    { src: './assets/fb-photo-8.jpg', label: 'Trench Work in Progress', category: 'excavation' },
+    { src: './assets/fb-photo-9.jpg', label: 'Drainage Pipe Installation', category: 'excavation' },
+    { src: './assets/fb-photo-10.jpg', label: 'Excavation Job Site', category: 'excavation' },
+    { src: './assets/fb-photo-11.jpg', label: 'Grading & Dirt Work', category: 'driveways' },
+    { src: './assets/fb-photo-13.jpg', label: 'Completed Septic Project', category: 'septic' },
+    { src: './assets/fb-photo-14.jpg', label: 'Driveway Grading', category: 'driveways' },
+    { src: './assets/fb-photo-16.jpg', label: 'Active Job Site', category: 'excavation' }
   ];
 
   const GALLERY_FILTERS = ['All', 'Septic', 'Excavation', 'Driveways', 'Clearing', 'Equipment'];
@@ -153,7 +159,7 @@
     },
     {
       q: 'How long has RS Excavation been in business?',
-      a: 'RS Excavation was founded in October 2022 by Robbie Smith. While the business is relatively new, Robbie brings years of heavy equipment operation experience and deep roots in Muhlenberg County. We\'ve completed over 100 jobs and counting.'
+      a: 'RS Excavation was founded in October 2022 by Robbie Smith. With over 20 years of heavy equipment operation experience and deep roots in Muhlenberg County, Robbie started RS Excavation to bring honest, quality work to his neighbors. We\'ve completed over 100 jobs and counting.'
     }
   ];
 
