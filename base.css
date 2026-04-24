@@ -1,4 +1,4 @@
-/* base.css — RS Excavation Design Tokens & Reset */
+/* base.css — PBS Kidsteer Design Tokens & Reset */
 
 /* ============================================
    TYPE SCALE (fluid)
@@ -63,75 +63,76 @@
 }
 
 /* ============================================
-   RS EXCAVATION PALETTE
-   Deep charcoal + construction orange
+   PBS KIDSTEER PALETTE
+   Penn State Navy Blue + White + Light Grey
    ============================================ */
 
-/* Dark mode is DEFAULT for this rugged brand */
-:root, [data-theme="dark"] {
-  --color-bg:             #0f0f0f;
-  --color-surface:        #161616;
-  --color-surface-2:      #1c1c1c;
-  --color-surface-offset: #1a1a1a;
-  --color-surface-offset-2: #222222;
-  --color-surface-dynamic: #2a2a2a;
-  --color-divider:        #2e2e2e;
-  --color-border:         #3a3a3a;
+/* Light mode is DEFAULT — clean professional blue/white */
+:root, [data-theme="light"] {
+  --color-bg:             #f4f6f9;
+  --color-surface:        #ffffff;
+  --color-surface-2:      #f8f9fb;
+  --color-surface-offset: #e8edf4;
+  --color-surface-offset-2: #dde4ef;
+  --color-surface-dynamic: #cdd6e8;
+  --color-divider:        #c8d2e4;
+  --color-border:         #b8c5d9;
 
-  --color-text:           #e8e6e3;
-  --color-text-muted:     #9a9895;
-  --color-text-faint:     #5e5c5a;
-  --color-text-inverse:   #0f0f0f;
+  --color-text:           #0d1a2e;
+  --color-text-muted:     #4a5c78;
+  --color-text-faint:     #8a9ab8;
+  --color-text-inverse:   #ffffff;
 
-  /* Primary Accent — Construction Orange */
-  --color-primary:        #FF6B00;
-  --color-primary-hover:  #FF8A33;
-  --color-primary-active: #E05A00;
-  --color-primary-highlight: #3d2a1a;
+  /* Primary Accent — Penn State Navy */
+  --color-primary:        #1E407C;
+  --color-primary-hover:  #163168;
+  --color-primary-active: #0f2350;
+  --color-primary-highlight: #dce5f3;
 
   /* Success */
-  --color-success:        #4CAF50;
-  --color-success-hover:  #66BB6A;
-
-  /* Error */
-  --color-error:          #ef4444;
-  --color-error-hover:    #f87171;
-
-  /* Shadows */
-  --shadow-sm: 0 1px 2px rgba(0,0,0,0.3);
-  --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
-  --shadow-lg: 0 12px 32px rgba(0,0,0,0.5);
-}
-
-[data-theme="light"] {
-  --color-bg:             #f5f3f0;
-  --color-surface:        #ffffff;
-  --color-surface-2:      #fafaf8;
-  --color-surface-offset: #edeae5;
-  --color-surface-offset-2: #e6e3de;
-  --color-surface-dynamic: #d9d6d1;
-  --color-divider:        #d1cec9;
-  --color-border:         #c4c1bc;
-
-  --color-text:           #1a1a1a;
-  --color-text-muted:     #5a5856;
-  --color-text-faint:     #9a9895;
-  --color-text-inverse:   #f5f3f0;
-
-  --color-primary:        #E05A00;
-  --color-primary-hover:  #C04D00;
-  --color-primary-active: #A04000;
-  --color-primary-highlight: #fde8d8;
-
   --color-success:        #2E7D32;
   --color-success-hover:  #388E3C;
 
+  /* Error */
   --color-error:          #d32f2f;
   --color-error-hover:    #e53935;
 
-  --shadow-sm: 0 1px 2px rgba(0,0,0,0.06);
-  --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
-  --shadow-lg: 0 12px 32px rgba(0,0,0,0.12);
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(30,64,124,0.07);
+  --shadow-md: 0 4px 12px rgba(30,64,124,0.10);
+  --shadow-lg: 0 12px 32px rgba(30,64,124,0.15);
+}
+
+[data-theme="dark"] {
+  --color-bg:             #0a0f1a;
+  --color-surface:        #0f1825;
+  --color-surface-2:      #141e2e;
+  --color-surface-offset: #121a28;
+  --color-surface-offset-2: #172030;
+  --color-surface-dynamic: #1e2d45;
+  --color-divider:        #243350;
+  --color-border:         #2e4268;
+
+  --color-text:           #e2e8f0;
+  --color-text-muted:     #8fa3c0;
+  --color-text-faint:     #4a6080;
+  --color-text-inverse:   #0a0f1a;
+
+  /* Primary — lighter navy for dark mode */
+  --color-primary:        #4a7ec8;
+  --color-primary-hover:  #6496d8;
+  --color-primary-active: #3a6ab4;
+  --color-primary-highlight: #1a2d50;
+
+  --color-success:        #4CAF50;
+  --color-success-hover:  #66BB6A;
+
+  --color-error:          #ef4444;
+  --color-error-hover:    #f87171;
+
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.4);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.5);
+  --shadow-lg: 0 12px 32px rgba(0,0,0,0.6);
 }
 
 /* ============================================
@@ -173,7 +174,7 @@ h1, h2, h3, h4, h5, h6 {
 p, li, figcaption { text-wrap: pretty; max-width: 72ch; }
 
 ::selection {
-  background: rgba(255, 107, 0, 0.3);
+  background: rgba(30, 64, 124, 0.25);
   color: var(--color-text);
 }
 
