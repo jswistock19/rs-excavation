@@ -1,4 +1,4 @@
-/* app.js — RS Excavation Interactivity */
+/* app.js — PBS Kidsteer Interactivity */
 
 (function () {
   'use strict';
@@ -221,7 +221,6 @@
   let currentImageIndex = 0;
 
   function openLightbox(index) {
-    // Get visible items
     currentGalleryImages = Array.from(document.querySelectorAll('.gallery__item:not(.hidden) img'));
     currentImageIndex = index;
     lightboxImg.src = currentGalleryImages[currentImageIndex].src;
@@ -243,11 +242,12 @@
     lightboxImg.alt = currentGalleryImages[currentImageIndex].alt;
   }
 
-  galleryItems.forEach(function (item) {
+  // Attach gallery item click handlers
+  galleryItems.forEach(function (item, index) {
     item.addEventListener('click', function () {
       const visibleItems = Array.from(document.querySelectorAll('.gallery__item:not(.hidden)'));
-      const index = visibleItems.indexOf(this);
-      openLightbox(index);
+      const visibleIndex = visibleItems.indexOf(item);
+      openLightbox(visibleIndex);
     });
   });
 
@@ -267,6 +267,119 @@
   });
 
   /* ============================================
+     CART
+     ============================================ */
+  let cart = [];
+
+  const cartToggle = document.querySelector('.cart-toggle');
+  const cartOverlay = document.getElementById('cartOverlay');
+  const cartDrawer = document.getElementById('cartDrawer');
+  const cartCloseBtn = document.querySelector('.cart-drawer__close');
+  const cartItemsContainer = document.getElementById('cartItems');
+  const cartTotalEl = document.getElementById('cartTotal');
+  const cartBadge = document.querySelector('.cart-badge');
+
+  function openCart() {
+    cartOverlay.classList.add('active');
+    cartDrawer.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeCart() {
+    cartOverlay.classList.remove('active');
+    cartDrawer.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+
+  if (cartToggle) cartToggle.addEventListener('click', openCart);
+  if (cartOverlay) cartOverlay.addEventListener('click', closeCart);
+  if (cartCloseBtn) cartCloseBtn.addEventListener('click', closeCart);
+
+  function updateCart() {
+    if (!cartItemsContainer) return;
+    const total = cart.reduce(function (sum, item) { return sum + item.price * item.qty; }, 0);
+    const itemCount = cart.reduce(function (sum, item) { return sum + item.qty; }, 0);
+
+    if (cartBadge) {
+      cartBadge.textContent = itemCount;
+      cartBadge.classList.toggle('visible', itemCount > 0);
+    }
+
+    if (cart.length === 0) {
+      cartItemsContainer.innerHTML = '<p class="cart-empty">Your cart is empty</p>';
+    } else {
+      cartItemsContainer.innerHTML = cart.map(function (item) {
+        return '<div class="cart-item" data-id="' + item.id + '">' +
+          '<div class="cart-item__info">' +
+            '<div class="cart-item__name">' + item.name + '</div>' +
+            '<div class="cart-item__price">$' + item.price.toFixed(2) + ' each</div>' +
+          '</div>' +
+          '<div class="cart-item__controls">' +
+            '<button onclick="window.decreaseQty(\'' + item.id + '\')" aria-label="Decrease">-</button>' +
+            '<span class="cart-item__qty">' + item.qty + '</span>' +
+            '<button onclick="window.increaseQty(\'' + item.id + '\')" aria-label="Increase">+</button>' +
+          '</div>' +
+        '</div>';
+      }).join('');
+    }
+
+    if (cartTotalEl) cartTotalEl.textContent = '$' + total.toFixed(2);
+  }
+
+  window.addToCart = function (id, name, price) {
+    const existing = cart.find(function (i) { return i.id === id; });
+    if (existing) {
+      existing.qty++;
+    } else {
+      cart.push({ id: id, name: name, price: price, qty: 1 });
+    }
+    updateCart();
+    openCart();
+  };
+
+  window.increaseQty = function (id) {
+    const item = cart.find(function (i) { return i.id === id; });
+    if (item) { item.qty++; updateCart(); }
+  };
+
+  window.decreaseQty = function (id) {
+    const idx = cart.findIndex(function (i) { return i.id === id; });
+    if (idx > -1) {
+      if (cart[idx].qty > 1) {
+        cart[idx].qty--;
+      } else {
+        cart.splice(idx, 1);
+      }
+      updateCart();
+    }
+  };
+
+  const checkoutBtn = document.getElementById('checkoutBtn');
+  const checkoutModal = document.getElementById('checkoutModal');
+  const modalClose = document.querySelector('.modal__close');
+  const modalOverlay = document.getElementById('checkoutModal');
+
+  if (checkoutBtn) {
+    checkoutBtn.addEventListener('click', function () {
+      if (cart.length === 0) return;
+      closeCart();
+      checkoutModal.classList.add('active');
+    });
+  }
+
+  if (modalClose) {
+    modalClose.addEventListener('click', function () {
+      checkoutModal.classList.remove('active');
+    });
+  }
+
+  if (checkoutModal) {
+    checkoutModal.addEventListener('click', function (e) {
+      if (e.target === checkoutModal) checkoutModal.classList.remove('active');
+    });
+  }
+
+  /* ============================================
      QUOTE FORM
      ============================================ */
   const quoteForm = document.getElementById('quoteForm');
@@ -275,135 +388,10 @@
   if (quoteForm) {
     quoteForm.addEventListener('submit', function (e) {
       e.preventDefault();
-
-      // Basic validation
-      const fullName = document.getElementById('fullName');
-      const phone = document.getElementById('phone');
-      const service = document.getElementById('service');
-
-      let valid = true;
-
-      [fullName, phone, service].forEach(function (field) {
-        if (!field.value.trim()) {
-          field.style.borderColor = 'var(--color-error)';
-          valid = false;
-        } else {
-          field.style.borderColor = '';
-        }
-      });
-
-      if (!valid) return;
-
-      // Simulate submission
       quoteForm.style.display = 'none';
-      quoteSuccess.style.display = 'block';
+      if (quoteSuccess) quoteSuccess.style.display = 'block';
     });
   }
-
-  /* ============================================
-     PAYMENT MODAL
-     ============================================ */
-  const payBtn = document.getElementById('payInvoiceBtn');
-  const paymentModal = document.getElementById('paymentModal');
-  const paymentModalClose = paymentModal ? paymentModal.querySelector('.modal__close') : null;
-
-  if (payBtn && paymentModal) {
-    payBtn.addEventListener('click', function () {
-      paymentModal.classList.add('active');
-    });
-    paymentModalClose.addEventListener('click', function () {
-      paymentModal.classList.remove('active');
-    });
-    paymentModal.addEventListener('click', function (e) {
-      if (e.target === paymentModal) paymentModal.classList.remove('active');
-    });
-  }
-
-  /* ============================================
-     MERCH CART
-     ============================================ */
-  const cart = [];
-  const cartToggle = document.getElementById('cartToggle');
-  const cartDrawer = document.getElementById('cartDrawer');
-  const cartOverlay = document.getElementById('cartOverlay');
-  const cartClose = document.getElementById('cartClose');
-  const cartBadge = document.getElementById('cartBadge');
-  const cartItemsEl = document.getElementById('cartItems');
-  const cartFooter = document.getElementById('cartFooter');
-  const cartTotalEl = document.getElementById('cartTotal');
-
-  function openCart() {
-    cartDrawer.classList.add('active');
-    cartOverlay.classList.add('active');
-    cartDrawer.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeCart() {
-    cartDrawer.classList.remove('active');
-    cartOverlay.classList.remove('active');
-    cartDrawer.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
-  }
-
-  function updateCartUI() {
-    const totalItems = cart.reduce(function (s, item) { return s + item.qty; }, 0);
-    const totalPrice = cart.reduce(function (s, item) { return s + item.price * item.qty; }, 0);
-
-    cartBadge.textContent = totalItems;
-    cartBadge.classList.toggle('visible', totalItems > 0);
-
-    if (cart.length === 0) {
-      cartItemsEl.innerHTML = '<p class="cart-empty">Your cart is empty</p>';
-      cartFooter.style.display = 'none';
-    } else {
-      cartItemsEl.innerHTML = cart.map(function (item, i) {
-        return '<div class="cart-item">' +
-          '<div class="cart-item__info">' +
-            '<div class="cart-item__name">' + item.name + '</div>' +
-            '<div class="cart-item__price">$' + item.price.toFixed(2) + '</div>' +
-          '</div>' +
-          '<div class="cart-item__controls">' +
-            '<button onclick="window.__cartMinus(' + i + ')" aria-label="Decrease quantity">−</button>' +
-            '<span class="cart-item__qty">' + item.qty + '</span>' +
-            '<button onclick="window.__cartPlus(' + i + ')" aria-label="Increase quantity">+</button>' +
-          '</div>' +
-        '</div>';
-      }).join('');
-      cartFooter.style.display = 'block';
-      cartTotalEl.textContent = '$' + totalPrice.toFixed(2);
-    }
-  }
-
-  window.__cartPlus = function (index) {
-    cart[index].qty++;
-    updateCartUI();
-  };
-
-  window.__cartMinus = function (index) {
-    cart[index].qty--;
-    if (cart[index].qty <= 0) cart.splice(index, 1);
-    updateCartUI();
-  };
-
-  document.querySelectorAll('.add-to-cart').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      const name = this.getAttribute('data-name');
-      const price = parseFloat(this.getAttribute('data-price'));
-      const existing = cart.find(function (item) { return item.name === name; });
-      if (existing) {
-        existing.qty++;
-      } else {
-        cart.push({ name: name, price: price, qty: 1 });
-      }
-      updateCartUI();
-      openCart();
-    });
-  });
-
-  cartToggle.addEventListener('click', openCart);
-  cartClose.addEventListener('click', closeCart);
-  cartOverlay.addEventListener('click', closeCart);
 
   /* ============================================
      FAQ ACCORDION
@@ -412,36 +400,21 @@
     btn.addEventListener('click', function () {
       const item = this.closest('.faq__item');
       const answer = item.querySelector('.faq__answer');
-      const isOpen = this.getAttribute('aria-expanded') === 'true';
+      const isOpen = answer.style.maxHeight && answer.style.maxHeight !== '0px';
 
-      // Close all others
-      document.querySelectorAll('.faq__item').forEach(function (other) {
-        if (other !== item) {
-          other.querySelector('.faq__question').setAttribute('aria-expanded', 'false');
-          other.querySelector('.faq__answer').style.maxHeight = null;
-        }
+      // Close all
+      document.querySelectorAll('.faq__answer').forEach(function (a) {
+        a.style.maxHeight = '0px';
+      });
+      document.querySelectorAll('.faq__question').forEach(function (q) {
+        q.setAttribute('aria-expanded', 'false');
       });
 
-      this.setAttribute('aria-expanded', !isOpen);
       if (!isOpen) {
         answer.style.maxHeight = answer.scrollHeight + 'px';
-      } else {
-        answer.style.maxHeight = null;
+        btn.setAttribute('aria-expanded', 'true');
       }
     });
   });
 
-  /* ============================================
-     SMOOTH SCROLL FOR NAV
-     ============================================ */
-  document.querySelectorAll('a[href^="#"]').forEach(function (link) {
-    link.addEventListener('click', function (e) {
-      const target = document.querySelector(this.getAttribute('href'));
-      if (target) {
-        e.preventDefault();
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    });
-  });
-
-})();
+}());
